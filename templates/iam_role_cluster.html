@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>EKS VPC Private Subnet Video</title>
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='vpc-creation.css') }}"
+    />
+  </head>
+  <body>
+    <div class="home-button-container">
+      <a href="{{ url_for('home') }}" class="home-button">Home</a>
+    </div>
+    <div class="container">
+      <div class="content-wrapper">
+        <!-- Video Box -->
+        <div class="video-box">
+          <h2>IAM Role Cluster Video</h2>
+          <iframe
+            src="https://www.youtube.com/embed/bxOZcNMc5mE"
+            title="EKS VPC Private Subnet Video"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowfullscreen
+          ></iframe>
+
+          <!-- Button Container -->
+          <div class="button-container">
+            <div class="button">
+              <a href="{{ url_for('eks_private_subnet') }}" class="previous-button"
+                >Previous</a
+              >
+              <div class="vpc-provider">Private Subnet & Natgateway</div>
+            </div>
+            <div class="button">
+              <a href="{{ url_for('iam_role_nodegroup') }}" class="next-button"
+                >Next</a
+              >
+              <div class="vpc-creation">IAM Role EKS Nodegroup</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Code Box -->
+        <div class="code-box">
+          <h2>EKS IAM Role Code</h2>
+          <pre><code>
+            # Create IAM Role
+            resource "aws_iam_role" "eks_master_role" {
+              name = "eks-master-role"
+            
+              assume_role_policy = <<POLICY
+            {
+              "Version": "2012-10-17",
+              "Statement": [
+                {
+                  "Effect": "Allow",
+                  "Principal": {
+                    "Service": "eks.amazonaws.com"
+                  },
+                  "Action": "sts:AssumeRole"
+                }
+              ]
+            }
+            POLICY
+            }
+            
+            # Associate IAM Policy to IAM Role
+            resource "aws_iam_role_policy_attachment" "eks-AmazonEKSClusterPolicy" {
+              policy_arn = "arn:aws:iam::aws:policy/AmazonEKSClusterPolicy"
+              role       = aws_iam_role.eks_master_role.name
+            }
+            
+            resource "aws_iam_role_policy_attachment" "eks-AmazonEKSVPCResourceController" {
+              policy_arn = "arn:aws:iam::aws:policy/AmazonEKSVPCResourceController"
+              role       = aws_iam_role.eks_master_role.name
+            }
+            
+</code></pre>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

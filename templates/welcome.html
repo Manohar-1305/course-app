@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Welcome</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        text-align: center;
+        padding: 50px;
+      }
+      h1 {
+        font-size: 3em;
+        margin-bottom: 20px;
+      }
+      form {
+        margin: 20px auto;
+        max-width: 400px;
+        text-align: left;
+      }
+      input {
+        width: 100%;
+        padding: 10px;
+        margin: 10px 0;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+      }
+/* General button styles */
+button {
+  width: 10%;
+  position: fixed;
+  bottom: 30px; /* Position the button 20px above the bottom of the screen */
+  left: 50%; /* Center the button horizontally */
+  transform: translateX(-50%);
+  padding: 10px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+
+button:hover {
+  background-color: #0056b3;
+}
+
+/* Logout button specific styles */
+.logout-btn {
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  padding: 10px 20px;
+  background: rgb(228, 4, 4);
+  border: 1px solid #d8d0d0;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.logout-btn:hover {
+  background: #f8f8f8;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+    </style>
+  </head>
+  <body>
+    <div class="user-info">
+      <div>Logged in as: {{ username }}</div>
+      <form action="{{ url_for('logout') }}" method="GET">
+        <button type="submit" class="logout-btn">Logout</button>
+    </form>
+    
+    </div>
+
+    <h1>Welcome, {{ username }}!</h1>
+
+    {% if not details_saved %}
+      <p>Please fill out your details to proceed:</p>
+
+      <form method="POST" action="/welcome">
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" required />
+
+        <label for="phone">Phone Number:</label>
+        <input type="tel" id="phone" name="phone" required />
+
+        <button type="submit" name="save_details">Save Details</button>
+      </form>
+    {% else %}
+      {% if not subscribed %}
+        <p>Your details have been saved. Please subscribe to proceed:</p>
+
+        <form method="POST" action="/welcome">
+          <button type="submit" name="subscribe">Subscribe Now</button>
+        </form>
+      {% else %}
+        <p>You are subscribed! Proceed to your view course.</p>
+        <a href="{{ url_for('course') }}">
+          <button>View Courses</button>
+        </a>
+      {% endif %}
+    {% endif %}
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        <ul class="flashes">
+          {% for category, message in messages %}
+            <li class="{{ category }}">{{ message }}</li>
+          {% endfor %}
+        </ul>
+      {% endif %}
+    {% endwith %}
+  </body>
+</html>

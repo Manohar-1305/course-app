@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kubernetes Learning Platform</title>
+  <style>
+    body {
+      font-family: system-ui, -apple-system, sans-serif;
+      margin: 0;
+      padding: 20px;
+      background: #f5f5f5;
+    }
+
+    .welcome-section {
+      max-width: 1200px;
+      margin: 0 auto 40px;
+      text-align: center;
+    }
+
+    .welcome-section h1 {
+      color: #1a1a1a;
+      margin-bottom: 20px;
+    }
+
+    .welcome-section h3 {
+      color: #2563eb;
+      margin-bottom: 15px;
+    }
+
+    .welcome-section p {
+      color: #4b5563;
+      font-size: 1.1em;
+      line-height: 1.5;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    .tab-section {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .tab-header {
+      background: #f8f8f8;
+      border: 1px solid #e2e2e2;
+      border-radius: 8px;
+      margin-bottom: 10px;
+    }
+
+    .tab-trigger {
+      width: 100%;
+      padding: 15px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-size: 16px;
+      font-weight: 500;
+    }
+
+    .tab-trigger:hover {
+      background: #f0f0f0;
+    }
+
+    .tab-content {
+      display: none;
+      padding: 20px;
+      background: white;
+      border: 1px solid #e2e2e2;
+      border-radius: 0 0 8px 8px;
+    }
+
+    .tab-content.active {
+      display: block;
+    }
+
+    .sub-tabs {
+      border-bottom: 1px solid #e2e2e2;
+      margin-bottom: 20px;
+    }
+
+    .sub-tab-button {
+      padding: 10px 20px;
+      margin-right: 10px;
+      background: none;
+      font-size: 16px;
+      border: none;
+      border-bottom: 2px solid transparent;
+      cursor: pointer;
+    }
+
+    .sub-tab-button.active {
+      border-bottom-color: #3b82f6;
+      color: #3b82f6;
+    }
+
+    .video-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 20px;
+      list-style: none;
+      padding: 0;
+    }
+
+    .video-item {
+      background: white;
+      padding: 15px;
+      border-radius: 8px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .video-item:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    }
+
+    .video-item a {
+      display: flex;
+      align-items: center;
+      text-decoration: none;
+      color: #333;
+    }
+
+    .video-item img {
+      width: 40px;
+      height: 40px;
+      margin-right: 15px;
+    }
+
+    .logout-btn {
+      position: fixed;
+      bottom: 30px;
+      right: 30px;
+      padding: 10px 20px;
+      background: rgb(228, 4, 4);
+      border: 1px solid #d8d0d0;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .logout-btn:hover {
+      background: #f8f8f8;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+
+    .chevron::before {
+      content: '▼';
+      display: inline-block;
+      transition: transform 0.3s;
+    }
+
+    .chevron.up::before {
+      transform: rotate(-180deg);
+    }
+  </style>
+</head>
+<body>
+  <div class="welcome-section">
+    <h1>Welcome, {{ username }}!</h1>
+    <h3>Videos of Highly Available Kubernetes Cluster using Terraform and Ansible Videos</h3>
+    <p>These are the Videos in which Highly Available Kubernetes Kubeadm & EKS & Openshift Cluster is created using using technologies such as Terraform & Ansible on AWS Cloud</p>
+  </div>
+
+  <div class="tab-section">
+    <!-- Kubeadm Cluster Tab -->
+    <div class="tab-header">
+      <button class="tab-trigger" onclick="toggleTab('kubeadm')">
+        <span>Kubeadm Private Cluster</span>
+        <span class="chevron" id="kubeadm-chevron"></span>
+      </button>
+      <div id="kubeadm" class="tab-content">
+        <div class="sub-tabs">
+          <button class="sub-tab-button active" onclick="showSubTab('terraform')">Terraform Videos</button>
+          <button class="sub-tab-button" onclick="showSubTab('ansible')">Ansible Videos</button>
+          <button class="sub-tab-button" onclick="showSubTab('blogs')">Blogs</button>
+        </div>
+
+        <div id="terraform" class="sub-tab-content">
+          <h2>Terraform Videos</h2>
+          <ul class="video-grid">
+            <li class="video-item">
+              <a href="{{ url_for('vpc_provider') }}">
+                <img src="{{ url_for('static', filename='images/terraform.png') }}" alt="Terraform Icon">
+                <span>Terraform Provider</span>
+              </a>
+            </li>
+            <li class="video-item">
+              <a href="{{ url_for('vpc_creation') }}">
+                <img src="{{ url_for('static', filename='images/terraform.png') }}" alt="Terraform Icon">
+                <span>Terraform VPC</span>
+              </a>
+            </li>
+            <li class="video-item">
+              <a href="{{ url_for('public_subnet') }}">
+                <img src="{{ url_for('static', filename='images/terraform.png') }}" alt="Terraform Icon">
+                <span>Terraform Public Subnet</span>
+              </a>
+            </li>
+            <li class="video-item">
+              <a href="{{ url_for('public_route') }}">
+                <img src="{{ url_for('static', filename='images/terraform.png') }}" alt="Terraform Icon">
+                <span>Terraform Public Route Creation</span>
+              </a>
+            </li>
+            <li class="video-item">
+              <a href="{{ url_for('private_subnet') }}">
+                <img src="{{ url_for('static', filename='images/terraform.png') }}" alt="Terraform Icon">
+                <span>Terraform Private Subnet</span>
+              </a>
+            </li>
+            <li class="video-item">
+              <a href="{{ url_for('private_route') }}">
+                <img src="{{ url_for('static', filename='images/terraform.png') }}" alt="Terraform Icon">
+                <span>Terraform Private Route Creation</span>
+              </a>
+            </li>
+            <li class="video-item">
+              <a href="{{ url_for('IAMCReation') }}">
+                <img src="{{ url_for('static', filename='images/terraform.png') }}" alt="Terraform Icon">
+                <span>Terraform IAM Creation</span>
+              </a>
+            </li>
+            <li class="video-item">
+              <a href="{{ url_for('natgateway') }}">
+                <img src="{{ url_for('static', filename='images/terraform.png') }}" alt="Terraform Icon">
+                <span>Terraform Nat Gateway Creation</span>
+              </a>
+            </li>
+            <li class="video-item">
+              <a href="{{ url_for('securitygroup') }}">
+                <img src="{{ url_for('static', filename='images/terraform.png') }}" alt="Terraform Icon">
+                <span>Terraform Security Group Creation</span>
+              </a>
+            </li>
+            <li class="video-item">
+              <a href="{{ url_for('instancecreation') }}">
+                <img src="{{ url_for('static', filename='images/terraform.png') }}" alt="Terraform Icon">
+                <span>Terraform Instances Creation</span>
+              </a>
+            </li>
+            <li class="video-item">
+              <a href="{{ url_for('terraform_variables') }}">
+                <img src="{{ url_for('static', filename='images/terraform.png') }}" alt="Terraform Icon">
+                <span>Terraform Variables</span>
+              </a>
+            </li>
+            <li class="video-item">
+              <a href="{{ url_for('terraform_output') }}">
+                <img src="{{ url_for('static', filename='images/terraform.png') }}" alt="Terraform Icon">
+                <span>Terraform Output</span>
+              </a>
+            </li>
+            <li class="video-item">
+              <a href="{{ url_for('terraform_user_data_bastion') }}">
+                <img src="{{ url_for('static', filename='images/terraform.png') }}" alt="Terraform Icon">
+                <span>Terraform User Data Bastion</span>
+              </a>
+            </li>
+            <li class="video-item">
+              <a href="{{ url_for('terraform_user_data_nfs') }}">
+                <img src="{{ url_for('static', filename='images/terraform.png') }}" alt="Terraform Icon">
+                <span>Terraform User Data NFS</span>
+              </a>
+            </li>
+            <li class="video-item">
+              <a href="{{ url_for('terraform_user_data_loadbalancer') }}">
+                <img src="{{ url_for('static', filename='images/terraform.png') }}" alt="Terraform Icon">
+                <span>Terraform User Data Load Balancer</span>
+              </a>
+            </li>
+            <li class="video-item">
+              <a href="{{ url_for('terraform_user_data_master') }}">
+                <img src="{{ url_for('static', filename='images/terraform.png') }}" alt="Terraform Icon">
+                <span>Terraform User Data Master</span>
+              </a>
+            </li>
+            <li class="video-item">
+              <a href="{{ url_for('adding_tags') }}">
+                <img src="{{ url_for('static', filename='images/terraform.png') }}" alt="Terraform Icon">
+                <span>Terraform Adding Tags to Resources</span>
+              </a>
+            </li>
+            <li class="video-item">
+              <a href="{{ url_for('terraform_null_provisioner') }}">
+                <img src="{{ url_for('static', filename='images/terraform.png') }}" alt="Terraform Icon">
+                <span>Terraform Null Provisioner</span>
+              </a>
+            </li>
+            <li class="video-item">
+              <a href="{{ url_for('terraform_infra_creation') }}">
+                <img src="{{ url_for('static', filename='images/terraform.png') }}" alt="Terraform Icon">
+                <span>Terraform Infra Creation</span>
+              </a>
+            </li>
+            <li class="video-item">
+              <a href="{{ url_for('creating_inventory') }}">
+                <img src="{{ url_for('static', filename='images/terraform.png') }}" alt="Terraform Icon">
+                <span>Inventory Creation</span>
+              </a>
+            </li>
+            <li class="video-item">
+              <a href="{{ url_for('changes_in_inventory') }}">
+                <img src="{{ url_for('static', filename='images/terraform.png') }}" alt="Terraform Icon">
+                <span>Changes in Inventory</span>
+              </a>
+            </li>
+            <li class="video-item">
+              <a href="{{ url_for('git_code') }}">
+                <img src="{{ url_for('static', filename='images/terraform.png') }}" alt="Terraform Icon">
+                <span>Pushing Git Code</span>
+              </a>
+            </li>
+            <li class="video-item">
+              <a href="{{ url_for('bastion_eip') }}">
+                <img src="{{ url_for('static', filename='images/terraform.png') }}" alt="Terraform Icon">
+                <span>Bstion EIP</span>
+              </a>
+            </li>
+            <li class="video-item">
+              <a href="{{ url_for('terraform_enviroment_creation') }}">
+                <img src="{{ url_for('static', filename='images/terraform.png') }}" alt="Terraform Icon">
+                <span>Terraform Environment Creation</span>
+              </a>
+            </li>
+            <li class="video-item">
+              <a href="{{ url_for('terraform_overall_summary') }}">
+                <img src="{{ url_for('static', filename='images/terraform.png') }}" alt="Terraform Icon">
+                <span>Terraform Overall Summary</span>
+              </a>
+            </li>
+            
+          </ul>
+        </div>
+
+        <div id="ansible" class="sub-tab-content" style="display: none;">
+          <h3>Ansible Videos</h3>
+          <ul class="video-grid">
+            <li class="video-item">
+              <a href="{{ url_for('ansible_k8s_setup') }}">
+                <img src="{{ url_for('static', filename='images/ansible.png') }}" alt="Terraform Icon">
+                <span>Ansible K8s Setup</span>
+              </a>
+            </li>
+            <li class="video-item">
+              <a href="{{ url_for('ansible_kubernetes_role') }}">
+                <img src="{{ url_for('static', filename='images/ansible.png') }}" alt="Terraform Icon">
+                <span>Kubernetes Role</span>
+              </a>
+            </li>
+            <li class="video-item">
+              <a href="{{ url_for('helm_role') }}">
+                <img src="{{ url_for('static', filename='images/ansible.png') }}" alt="Terraform Icon">
+                <span>Helm Installation Role</span>
+              </a>
+            </li>
+            <li class="video-item">
+              <a href="{{ url_for('first_master_role') }}">
+                <img src="{{ url_for('static', filename='images/ansible.png') }}" alt="Terraform Icon">
+                <span>First Master Role</span>
+              </a>
+            </li>
+            <li class="video-item">
+              <a href="{{ url_for('add_master_role') }}">
+                <img src="{{ url_for('static', filename='images/ansible.png') }}" alt="Terraform Icon">
+                <span>Add Master Role</span>
+              </a>
+            </li>
+            <li class="video-item">
+              <a href="{{ url_for('add_workers_role') }}">
+                <img src="{{ url_for('static', filename='images/ansible.png') }}" alt="Terraform Icon">
+                <span>Add Worker Role</span>
+              </a>
+            </li>
+            <li class="video-item">
+              <a href="{{ url_for('time_sync_role') }}">
+                <img src="{{ url_for('static', filename='images/ansible.png') }}" alt="Terraform Icon">
+                <span>Time Sync Role</span>
+              </a>
+            </li>
+            <li class="video-item">
+              <a href="{{ url_for('kubectl_role') }}">
+                <img src="{{ url_for('static', filename='images/ansible.png') }}" alt="Terraform Icon">
+                <span>Kubectl Role</span>
+              </a>
+            </li>
+            <li class="video-item">
+              <a href="{{ url_for('cni_role') }}">
+                <img src="{{ url_for('static', filename='images/ansible.png') }}" alt="Terraform Icon">
+                <span>CNI Role</span>
+              </a>
+            </li>
+            <li class="video-item">
+              <a href="{{ url_for('add_masters_label') }}">
+                <img src="{{ url_for('static', filename='images/ansible.png') }}" alt="Terraform Icon">
+                <span>Add Master Label Playbook</span>
+              </a>
+            </li>
+            <li class="video-item">
+              <a href="{{ url_for('add_workers_label') }}">
+                <img src="{{ url_for('static', filename='images/ansible.png') }}" alt="Terraform Icon">
+                <span>Add Worker Label Playbook</span>
+              </a>
+            </li>
+            <li class="video-item">
+              <a href="{{ url_for('nfs_setup') }}">
+                <img src="{{ url_for('static', filename='images/ansible.png') }}" alt="Terraform Icon">
+                <span>NFS Setup Role</span>
+              </a>
+            </li>
+            <li class="video-item">
+              <a href="{{ url_for('nfs_client_setup') }}">
+                <img src="{{ url_for('static', filename='images/ansible.png') }}" alt="Terraform Icon">
+                <span>NFS Setup Client Role</span>
+              </a>
+            </li>
+            <li class="video-item">
+              <a href="{{ url_for('K8s_installer') }}">
+                <img src="{{ url_for('static', filename='images/ansible.png') }}" alt="Terraform Icon">
+                <span>K8s Installer Role</span>
+              </a>
+            </li>
+            <li class="video-item">
+              <a href="{{ url_for('cluster_setup') }}">
+                <img src="{{ url_for('static', filename='images/ansible.png') }}" alt="Terraform Icon">
+                <span>Cluster setup Role</span>
+              </a>
+            </li>
+            <li class="video-item">
+              <a href="{{ url_for('aws_controller_role') }}">
+                <img src="{{ url_for('static', filename='images/ansible.png') }}" alt="Terraform Icon">
+                <span>AWS Controller Role</span>
+              </a>
+            </li>
+            <li class="video-item">
+              <a href="{{ url_for('label_master') }}">
+                <img src="{{ url_for('static', filename='images/ansible.png') }}" alt="Terraform Icon">
+                <span>Label Master Playbook</span>
+              </a>
+            </li>
+            <li class="video-item">
+              <a href="{{ url_for('reverse_proxy') }}">
+                <img src="{{ url_for('static', filename='images/ansible.png') }}" alt="Terraform Icon">
+                <span>Reverse Proxy</span>
+              </a>
+            </li>
+            <li class="video-item">
+              <a href="{{ url_for('modification') }}">
+                <img src="{{ url_for('static', filename='images/ansible.png') }}" alt="Terraform Icon">
+                <span>Code Modification</span>
+              </a>
+            </li>
+            <li class="video-item">
+              <a href="{{ url_for('loadbalancer_svc') }}">
+                <img src="{{ url_for('static', filename='images/ansible.png') }}" alt="Terraform Icon">
+                <span>LoadBalancer Service</span>
+              </a>
+            </li>
+            <li class="video-item">
+              <a href="{{ url_for('mapping_domain') }}">
+                <img src="{{ url_for('static', filename='images/ansible.png') }}" alt="Terraform Icon">
+                <span>Mapping Domain & Adding Certificate</span>
+              </a>
+            </li>
+          </ul>
+        </div>
+
+        <div id="blogs" class="sub-tab-content" style="display: none;">
+          <h3>Blogs</h3>
+          <li>
+            <img src="path/to/video-icon.png" alt="Video Icon" /><a
+              href="{{ url_for('provider_blog') }}"
+              >Terraform Provider</a>
+          </li>
+          <li>
+            <img src="path/to/video-icon.png" alt="Video Icon" /><a
+              href="{{ url_for('vpc_creation_blog') }}"
+              >Terraform VPC creation</a
+            >
+          </li>
+          <li>
+            <img src="path/to/video-icon.png" alt="Video Icon" /><a
+              href="{{ url_for('terraform_public_subnet_blog') }}"
+              >Terraform Public Subnet</a
+            >
+          </li>      
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- EKS Tab -->
+    <div class="tab-header">
+      <button class="tab-trigger" onclick="toggleTab('eks')">
+        <span>EKS Private Cluster</span>
+        <span class="chevron" id="eks-chevron"></span>
+      </button>
+      <div id="eks" class="tab-content">
+        <div style="text-align: center; color: #666;">
+          <ul class="video-grid">
+            <li class="video-item">
+              <a href="{{ url_for('eks_vpc_creation') }}">
+                <img src="{{ url_for('static', filename='images/terraform.png') }}" alt="Terraform Icon">
+                <span>VPC Creation</span>
+              </a>
+            </li>
+          <li class="video-item">
+            <a href="{{ url_for('eks_public_subnet') }}">
+              <img src="{{ url_for('static', filename='images/terraform.png') }}" alt="Terraform Icon">
+              <span>Public Subnet Creation</span>
+            </a>
+          </li>
+          <li class="video-item">
+            <a href="{{ url_for('eks_private_subnet') }}">
+              <img src="{{ url_for('static', filename='images/terraform.png') }}" alt="Terraform Icon">
+              <span>Private Subnet Creation</span>
+            </a>
+          </li>
+          <li class="video-item">
+            <a href="{{ url_for('iam_role_cluster') }}">
+              <img src="{{ url_for('static', filename='images/terraform.png') }}" alt="Terraform Icon">
+              <span>IAM Role EKS Cluster</span>
+            </a>
+          </li>
+          <li class="video-item">
+            <a href="{{ url_for('iam_role_nodegroup') }}">
+              <img src="{{ url_for('static', filename='images/terraform.png') }}" alt="Terraform Icon">
+              <span>IAM Role NodeGroup </span>
+            </a>
+          </li>
+          <li class="video-item">
+            <a href="{{ url_for('eks_cluster_creation') }}">
+              <img src="{{ url_for('static', filename='images/terraform.png') }}" alt="Terraform Icon">
+              <span>EKS Cluster Creation </span>
+            </a>
+          </li>
+          <li class="video-item">
+            <a href="{{ url_for('eks_nodegroup_creation') }}">
+              <img src="{{ url_for('static', filename='images/terraform.png') }}" alt="Terraform Icon">
+              <span>EKS NodeGroup Creation </span>
+            </a>
+          </li>
+          <li class="video-item">
+            <a href="{{ url_for('eks_bastion_creation') }}">
+              <img src="{{ url_for('static', filename='images/terraform.png') }}" alt="Terraform Icon">
+              <span>Bastion Creation </span>
+            </a>
+          </li>
+          <li class="video-item">
+            <a href="{{ url_for('code_review') }}">
+              <img src="{{ url_for('static', filename='images/terraform.png') }}" alt="Terraform Icon">
+              <span>Complete Code Review </span>
+            </a>
+          </li>
+        </div>
+      </div>
+      <div class="tab-header">
+        <button class="tab-trigger" onclick="toggleTab('openshift')">
+          <span>Openshift Cluster</span>
+          <span class="chevron" id="eks-chevron"></span>
+        </button>
+        <div id="openshift" class="tab-content">
+          <div style="text-align: center; color: #560202;">
+            <p>Openshift content coming soon...</p>
+          </div>
+        </div>
+    </div>
+  </div>
+
+  <form action="{{ url_for('logout') }}" method="GET">
+    <button type="submit" class="logout-btn">Logout</button>
+</form>
+
+  <script>
+    function toggleTab(tabId) {
+      const content = document.getElementById(tabId);
+      const chevron = document.getElementById(tabId + '-chevron');
+      content.classList.toggle('active');
+      chevron.classList.toggle('up');
+    }
+
+    function showSubTab(tabId) {
+      // Hide all sub-tab content
+      const subTabs = document.querySelectorAll('.sub-tab-content');
+      subTabs.forEach(tab => tab.style.display = 'none');
+
+      // Show selected sub-tab content
+      const selectedTab = document.getElementById(tabId);
+      selectedTab.style.display = 'block';
+
+      // Update active state of sub-tab buttons
+      const buttons = document.querySelectorAll('.sub-tab-button');
+      buttons.forEach(button => button.classList.remove('active'));
+      event.target.classList.add('active');
+    }
+
+    function logout() {
+      console.log('Logout clicked');
+    }
+  </script>
+</body>
+</html>

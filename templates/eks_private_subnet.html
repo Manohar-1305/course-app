@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>EKS VPC Private Subnet Video</title>
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='vpc-creation.css') }}"
+    />
+  </head>
+  <body>
+    <div class="home-button-container">
+      <a href="{{ url_for('home') }}" class="home-button">Home</a>
+    </div>
+    <div class="container">
+      <div class="content-wrapper">
+        <!-- Video Box -->
+        <div class="video-box">
+          <h2>EKS VPC Private Subnet & NAT Gateway Video</h2>
+          <iframe
+            src="https://www.youtube.com/embed/xXdaCgULgjg"
+            title="EKS VPC Private Subnet Video"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowfullscreen
+          ></iframe>
+
+          <!-- Button Container -->
+          <div class="button-container">
+            <div class="button">
+              <a href="{{ url_for('eks_public_subnet') }}" class="previous-button"
+                >Previous</a
+              >
+              <div class="vpc-provider">Public Subnet EKS</div>
+            </div>
+            <div class="button">
+              <a href="{{ url_for('iam_role_cluster') }}" class="next-button"
+                >Next</a
+              >
+              <div class="vpc-creation">IAM Role EKS Cluster</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Code Box -->
+        <div class="code-box">
+          <h2>EKS VPC Private Subnet Code</h2>
+          <pre><code>
+resource "aws_subnet" "eks_private_subnet" {
+  count                   = 3
+  vpc_id                  = aws_vpc.eks_vpc.id
+  cidr_block              = cidrsubnet(aws_vpc.eks_vpc.cidr_block, 8, count.index)
+  availability_zone       = element(data.aws_availability_zones.available.names, count.index)
+  map_public_ip_on_launch = false
+  tags = {
+    Name = "EKS_Private_Subnet_${count.index + 1}"
+  }
+}
+-------------------
+Public Route Table
+-------------------
+resource "aws_route_table" "public_route_table" {
+  vpc_id = aws_vpc.eks_vpc.id
+
+  route {
+    cidr_block = "0.0.0.0/0"
+    gateway_id = aws_internet_gateway.eks_igw.id
+  }
+  tags = {
+    Name = "public_route_table"
+  }
+}
+
+resource "aws_route_table_association" "Public_route_table_association" {
+  route_table_id = aws_route_table.public_route_table.id
+  subnet_id      = aws_subnet.eks_public_subnet.id
+
+}
+
+-------------------
+Private Route Table
+-------------------
+resource "aws_route_table" "private_route_table" {
+  vpc_id = aws_vpc.eks_vpc.id
+
+  route {
+    cidr_block     = "0.0.0.0/0"
+    nat_gateway_id = aws_nat_gateway.eks_nat_gateway.id
+  }
+
+  tags = {
+    Name = "private_route_table"
+  }
+}
+
+resource "aws_route_table_association" "Private_route_table_association" {
+  count          = 3
+  subnet_id      = aws_subnet.eks_private_subnet[count.index].id
+  route_table_id = aws_route_table.private_route_table.id
+
+}
+
+------------
+Nat Gateway
+------------
+resource "aws_eip" "nat_eip" {
+  domain = "vpc"
+}
+
+resource "aws_nat_gateway" "eks_nat_gateway" {
+  allocation_id = aws_eip.nat_eip.id
+  subnet_id     = aws_subnet.eks_public_subnet.id
+  depends_on    = [aws_internet_gateway.eks_igw]
+}
+
+</code></pre>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
