@@ -8,9 +8,10 @@ Pipeline Utility Steps
 SonarQube Scanner
 OWASP Dependency-Check
 
-Install 
+Install manually
 sonarqube
 Synk
+trivy
 
 Tools -> Dependency->DP-Check-installation-automatic
 Systems->SonarQube installations->Name->sonar-server->Server authentication token->Sonar-token
@@ -55,5 +56,6 @@ Select:
 Kind: Secret text
 Secret: <your Snyk token>
 ID: Snyk-Token (this is what you reference in the pipeline)
+
 
 2a60d35e-7ea1-4eb0-9e79-286cda81b0ce
