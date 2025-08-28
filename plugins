@@ -13,40 +13,12 @@ sonarqube
 Synk
 trivy
 
-Tools -> Dependency->DP-Check-installation-automatic
-Systems->SonarQube installations->Name->sonar-server->Server authentication token->Sonar-token
+
 Manage Jenkins → Configure System → SonarQube=> SonarQube installations=>  Name=> sonar-server => Server URL =>http://65.2.184.54:9000=> Server authentication token => Add - Select a  token or create a new token-> Sonarqube URL-> Administration-Configuration-> Security -> User -> Create a new token - Take token -> and create a secret in jenkins.
 Administration-Configuration->Webhooks->Create->Name->jenkins-sonar-webhoook->URL->http://65.2.137.252:8080/sonarqube-webhook
 
-cd /var/lib/jenkins/workspace
-ls -lh trivy-image-report.html
-fced1112-82b8-4bf4-85a6-9737985d0ac9
-npm install -g snyk
-npm install -g snyk-to-html
 
-export PATH=$PATH:$HOME/.npm-global/bin
-snyk --version
-snyk container test course-web-app:v3 --severity-threshold=high --json > snyk-report.json
-snyk-to-html -i snyk-report.json -o snyk-report.html
-
-# Install Node.js if not already installed
-sudo apt update
-sudo apt install -y nodejs npm
-# Install Snyk using npm
-npm install -g snyk
-
-# Download the latest Snyk CLI binary
-curl -Lo snyk "https://static.snyk.io/cli/latest/snyk-linux"
-chmod +x snyk
-sudo mv snyk /usr/local/bin
-snyk --version
-
-curl -fsSL https://deb.nodesource.com/setup_18.x | sudo -E bash -
-sudo apt-get install -y nodejs
-
-
-sudo apt install npm -y
-sudo npm install -g snyk-to-html -y
+- Snyk Account Token
 https://app.snyk.io/account
 
 1.Add Snyk token to Jenkins Credentials
@@ -55,7 +27,5 @@ Go to Jenkins → Manage Jenkins → Credentials → Global → Add Credentials.
 Select:
 Kind: Secret text
 Secret: <your Snyk token>
-ID: Snyk-Token (this is what you reference in the pipeline)
+ID: Snyk-Token 
 
-
-2a60d35e-7ea1-4eb0-9e79-286cda81b0ce
