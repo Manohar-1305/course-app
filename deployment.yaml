@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: course-website-container
-        image: course-website:v1   # replace with your built image name (e.g. your-dockerhub-user/flask-app:v1)
+        image: manoharshetty507/course-website:v1   # replace with your built image name (e.g. your-dockerhub-user/flask-app:v1)
         ports:
         - containerPort: 5000
 
