@@ -13,7 +13,7 @@ sonarqube
 Synk
 trivy
 
-* Generate SonarQube Token and Configure Webhook in Jenkins
+- Generate SonarQube Token and Configure Webhook in Jenkins
 ------------------------------------------------------------
 step 1: Generate SonarQube Token
 Log in to SonarQube.
@@ -49,7 +49,7 @@ Name: jenkins-sonar-webhook
 URL: http://<jenkins-server>:8080/sonarqube-webhook (e.g., http://65.2.137.252:8080/sonarqube-webhook)
 Save the webhook.
 
-Docker credentials
+ - Docker credentials
 -------------------
 Click (global) → Add Credentials.
 Choose Kind depending on your setup:
@@ -62,8 +62,8 @@ SSH Username with private key
 If you’re authenticating to a private registry with SSH.
 Click Save.
 
-
 - Snyk Account Token
+-----------------------
 https://app.snyk.io/account
 1.Add Snyk token to Jenkins Credentials
 Go to Jenkins → Manage Jenkins → Credentials → Global → Add Credentials.
@@ -72,6 +72,7 @@ Select:
 Kind: Secret text
 Secret: <your Snyk token>
 ID: Snyk-Token 
+
 
 
 
