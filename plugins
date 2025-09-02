@@ -8,19 +8,63 @@ Pipeline Utility Steps
 SonarQube Scanner
 OWASP Dependency-Check
 
-Install manually
+Install manually on server
 sonarqube
 Synk
 trivy
 
+* Generate SonarQube Token and Configure Webhook in Jenkins
+------------------------------------------------------------
+step 1: Generate SonarQube Token
+Log in to SonarQube.
+Go to:
+Administration → Security → Users → (Select your user) → Tokens
+Click Generate Token.
+Give it a name (e.g., jenkins-token) and copy the token.
+Important: Copy it now, you won’t see it again.
 
-Manage Jenkins → Configure System → SonarQube=> SonarQube installations=>  Name=> sonar-server => Server URL =>http://65.2.184.54:9000=> Server authentication token => Add - Select a  token or create a new token-> Sonarqube URL-> Administration-Configuration-> Security -> User -> Create a new token - Take token -> and create a secret in jenkins.
-Administration-Configuration->Webhooks->Create->Name->jenkins-sonar-webhoook->URL->http://65.2.137.252:8080/sonarqube-webhook
+Step 2: Add SonarQube Token in Jenkins
+Log in to Jenkins.
+Go to:
+Manage Jenkins → Credentials → (Global) → Add Credentials
+Choose Kind → Secret text.
+Paste the SonarQube token.
+Give it an ID (e.g., sonarqube-token) → Save.
+
+Step 3: Configure SonarQube Endpoint in Jenkins
+Go to:
+Manage Jenkins → Configure System → SonarQube
+Click Add SonarQube.
+Fill in:
+Name: sonar-server
+Server URL (SonarQube endpoint): http://65.2.184.54:9000
+Server authentication token: Select the secret you just added (sonarqube-token)
+Save the configuration.
+
+Step 4: Configure Webhook in SonarQube
+In SonarQube, go to:
+Administration → Configuration → Webhooks → Create
+Fill in:
+Name: jenkins-sonar-webhook
+URL: http://<jenkins-server>:8080/sonarqube-webhook (e.g., http://65.2.137.252:8080/sonarqube-webhook)
+Save the webhook.
+
+Docker credentials
+-------------------
+Click (global) → Add Credentials.
+Choose Kind depending on your setup:
+Username with password
+Enter your DockerHub / registry username and password / token.
+Give it a meaningful ID (e.g., dockerhub-credentials).
+Secret text
+If your Docker registry uses an access token.
+SSH Username with private key
+If you’re authenticating to a private registry with SSH.
+Click Save.
 
 
 - Snyk Account Token
 https://app.snyk.io/account
-
 1.Add Snyk token to Jenkins Credentials
 Go to Jenkins → Manage Jenkins → Credentials → Global → Add Credentials.
 
@@ -28,4 +72,6 @@ Select:
 Kind: Secret text
 Secret: <your Snyk token>
 ID: Snyk-Token 
+
+
 
